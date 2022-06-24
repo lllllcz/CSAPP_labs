@@ -1,0 +1,81 @@
+                            | ## 520021911275 李忱泽
+                            | ## In this file, I change the order of some instructions and use the instruction IADDQ.
+                            | ## Then, I try to use 2*1 loop unrolling.
+                            | 
+                            | #/* $begin ncopy-ys */
+                            | ##################################################################
+                            | # ncopy.ys - Copy a src block of len words to dst.
+                            | # Return the number of positive words (>0) contained in src.
+                            | #
+                            | # Include your name and ID here.
+                            | #
+                            | # Describe how and why you modified the baseline code.
+                            | #
+                            | ##################################################################
+                            | # Do not modify this portion
+                            | # Function prologue.
+                            | # %rdi = src, %rsi = dst, %rdx = len
+0x000:                      | ncopy:
+                            | 
+                            | ##################################################################
+                            | # You can modify this portion
+                            | # Loop header
+0x000: 6300                 | 	xorq %rax,%rax		# count = 0;
+0x002: 6222                 | 	andq %rdx,%rdx		# len <= 0?
+0x004: 713e01000000000000   | 	jle Done		# if so, goto Done:
+0x00d:                      | Loop:
+0x00d: 2021                 |     rrmovq %rdx, %rcx
+0x00f: c0f1fcffffffffffffff |     iaddq $-4, %rcx
+0x019: 71ee00000000000000   |     jle SingleLoop
+                            | 
+0x022: 50a70000000000000000 |     mrmovq (%rdi), %r10
+0x02c: 50b70800000000000000 |     mrmovq 8(%rdi), %r11
+0x036: 50871000000000000000 |     mrmovq 16(%rdi), %r8
+0x040: 50971800000000000000 |     mrmovq 24(%rdi), %r9
+0x04a: c0f72000000000000000 |     iaddq $32, %rdi
+0x054: 40a60000000000000000 |     rmmovq %r10, (%rsi)
+0x05e: 40b60800000000000000 |     rmmovq %r11, 8(%rsi)
+0x068: 40861000000000000000 |     rmmovq %r8, 16(%rsi)
+0x072: 40961800000000000000 |     rmmovq %r9, 24(%rsi)
+0x07c: c0f62000000000000000 |     iaddq $32, %rsi
+                            | 
+0x086: 62aa                 |     andq %r10, %r10
+0x088: 719b00000000000000   |     jle Npos1
+0x091: c0f00100000000000000 |     iaddq $1, %rax
+0x09b:                      | Npos1:
+0x09b: 62bb                 |     andq %r11, %r11
+0x09d: 71b000000000000000   |     jle Npos2
+0x0a6: c0f00100000000000000 |     iaddq $1, %rax
+0x0b0:                      | Npos2:
+0x0b0: 6288                 |     andq %r8, %r8
+0x0b2: 71c500000000000000   |     jle Npos3
+0x0bb: c0f00100000000000000 |     iaddq $1, %rax
+0x0c5:                      | Npos3:
+0x0c5: 6299                 |     andq %r9, %r9
+0x0c7: 71da00000000000000   |     jle Npos4
+0x0d0: c0f00100000000000000 |     iaddq $1, %rax
+0x0da:                      | Npos4:
+0x0da: c0f2fcffffffffffffff |     iaddq $-4, %rdx
+0x0e4: 760d00000000000000   |     jg Loop
+0x0ed: 90                   | 	ret
+                            | 
+0x0ee:                      | SingleLoop:
+0x0ee: 50a70000000000000000 | 	mrmovq (%rdi), %r10
+0x0f8: c0f70800000000000000 | 	iaddq $8, %rdi
+0x102: 40a60000000000000000 | 	rmmovq %r10, (%rsi)
+0x10c: c0f60800000000000000 | 	iaddq $8, %rsi
+0x116: 62aa                 | 	andq %r10, %r10
+0x118: 712b01000000000000   | 	jle Npos
+0x121: c0f00100000000000000 | 	iaddq $1, %rax
+0x12b:                      | Npos:
+0x12b: c0f2ffffffffffffffff | 	iaddq $-1, %rdx
+0x135: 76ee00000000000000   | 	jg SingleLoop
+                            | ##################################################################
+                            | # Do not modify the following section of code
+                            | # Function epilogue.
+0x13e:                      | Done:
+0x13e: 90                   | 	ret
+                            | ##################################################################
+                            | # Keep the following label at the end of your function
+0x13f:                      | End:
+                            | #/* $end ncopy-ys */

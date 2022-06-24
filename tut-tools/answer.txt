@@ -1,0 +1,1 @@
+1 $LANG=C ps -u ics -o cmd --no-header | sort; 2: $grep -c a /usr/share/dict/words; 3: $ls /etc -llt *.conf | sort -r | tail -n 5; 4: $echo "echo helloworld" > echo.sh

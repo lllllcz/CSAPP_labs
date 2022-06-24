@@ -1,0 +1,38 @@
+# 520021911275 李忱泽
+
+	.pos 0
+	irmovq stack,%rsp
+	call main
+	halt
+
+	.align 8
+list:
+	.quad 0xa
+	.quad l2
+l2:
+	.quad 0xb0
+	.quad l3
+l3:
+	.quad 0xc00
+	.quad 0
+
+main:
+	irmovq list,%rdi
+	call sum_list
+	ret 
+
+sum_list:
+    andq %rdi, %rdi
+    je end
+    mrmovq (%rdi), %rbx
+    mrmovq 8(%rdi), %rdi
+    pushq %rbx
+    call sum_list
+    popq %rbx
+    addq %rbx, %rax
+
+end:
+    ret
+
+	.pos 0x200
+stack:

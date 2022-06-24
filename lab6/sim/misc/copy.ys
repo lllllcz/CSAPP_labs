@@ -1,0 +1,45 @@
+# 520021911275 李忱泽
+
+    .pos 0
+	irmovq stack,%rsp
+	call    main
+	halt
+
+	.align 8
+src:
+    .quad 0xc00
+    .quad 0x0b0
+    .quad 0x00a
+    .quad 0
+dest:
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+
+main:
+	irmovq src, %rdi
+    irmovq dest, %rsi
+    irmovq $3, %rdx
+	call copy_block
+	ret 
+
+copy_block:
+    irmovq $0, %rax
+    irmovq $1, %r12
+    irmovq $8, %r13
+loop:
+    andq %rdx, %rdx
+    je      end
+	mrmovq (%rdi), %rbx
+    addq %r13, %rdi
+	rmmovq %rbx, (%rsi)
+    addq %r13, %rsi
+    xorq %rbx, %rax
+    subq %r12, %rdx
+    jmp     loop
+end:
+    ret
+
+	.pos 0x200
+stack:

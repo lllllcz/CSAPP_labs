@@ -1,0 +1,118 @@
+/*
+ * BUG#0
+ * description: 
+     miss semicolon
+ * location: 
+ *   int a = 10  (line 18)
+ * evidence: 
+ *   test.c:19: error: two or more data types in declaration specifiers
+ */
+
+BUG#1
+description:
+missing header file stdio.h
+location:
+line 42
+evidence:
+gen_sort.c:187:2: error: unknown type name 'FILE'
+
+
+BUG#2
+description:
+missing ';'
+location:
+line 52
+evidence:
+gen_sort.c:54:9: error: expect ';', identifier or '(' before 'struct'
+
+
+BUG#3
+description:
+missing ';'
+location:
+line 58
+evidence:
+gen_sort.c:58:11: error: expect ';' before 'static'
+
+
+BUG#4
+description:
+spelling mistake
+location:
+gen_rec(record *rec) (line 114)
+evidence:
+gen_sort.c:114:9: error: unknown type name 'record'
+
+
+BUG#5
+description:
+missing '{'
+location:
+line 188
+evidence:
+gen_sort.c:194:2: error: expect identifier or '(' before 'while'
+
+
+BUG#6
+description:
+missing ';'
+location:
+line 192
+evidence:
+gen_sort.c:212:2: error: expect identifier or '(' before 'return'
+
+
+BUG#7
+description:
+no initialization
+location:
+line 188
+evidence:
+error: unable to open file
+
+
+
+BUG#8
+description:
+"i++" should ne "j++"
+location:
+for(j=0;j<10;i++) (line 125)
+evidence:
+segmentation fault
+
+
+BUG#9
+description:
+file open mode mistake, could be "w"
+location:
+line 190
+evidence:
+
+
+BUG#10
+description:
+malloc(buf_nrec) should be buf_size
+location:
+line 182
+evidence:
+segmentation fault
+
+
+BUG#11
+description:
+rec_len should add recno_len
+location:
+line 49
+evidence:
+segmentation fault
+
+
+BUG#12
+description:
+should be cnt < buf_nrec, with no "="
+location:
+line 148
+evidence:
+segmentation fault
+
+
